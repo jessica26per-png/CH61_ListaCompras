@@ -7,13 +7,11 @@ const contadorProductos = document.getElementById("contadorProductos");
 const productosTotal = document.getElementById("productosTotal");
 const precioTotal = document.getElementById("precioTotal");
 const tablaListaCompras = document.getElementById("tablaListaCompras");
-const cuerpoTabla = tablaListaCompras.getElementsByClassName("tbody").item(0);
-
+const cuerpoTabla = tablaListaCompras.getElementsByTagName("tbody").item(0);
 
 let cont = 0;
 let totalEnProductos = 0;
 let costoTotal = 0;
-
 
 function validarCantidad(cantidad) {
     if (cantidad.length == 0) {
@@ -70,15 +68,30 @@ btnAgregar.addEventListener("click", function (event) {
         productosTotal.innerText = totalEnProductos;
         precioTotal.innerText = new Intl.NumberFormat("es-MX",
             { style: "currency", currency: "MXN" }).format(costoTotal);
-            
 
-        txtName.value="";
-        txtNumber.value="";
+        let resumen = {
+            "cont": cont,
+            "totalEnProductos": totalEnProductos,
+            "costoTotal": costoTotal
+        };
+        localStorage.setItem("resumen", JSON.stringify(resumen));
+
+        txtName.value = "";
+        txtNumber.value = "";
         txtName.focus();
     }//isValid
+});//btn Agregar click 
 
-
-
-
-    console.log(txtName.value);
-}); 
+window.addEventListener("load", function (event) {
+    event.preventDefault();
+    if (this.localStorage.getItem("resumen") != null) {
+        let resumen = JSON.parse(this.localStorage.getItem("resumen"));
+        cont = resumen.cont;
+        totalEnProductos = resumen.totalEnProductos;
+        costoTotal = resumen.costoTotal;
+    }//!=null
+    contadorProductos.innerText = cont;
+    productosTotal.innerText = totalEnProductos;
+    precioTotal.innerText = new Intl.NumberFormat("es-MX",
+        { style: "currency", currency: "MXN" }).format(costoTotal);
+});;//window load
