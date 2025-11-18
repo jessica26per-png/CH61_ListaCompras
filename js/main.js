@@ -8,6 +8,7 @@ const productosTotal = document.getElementById("productosTotal");
 const precioTotal = document.getElementById("precioTotal");
 const tablaListaCompras = document.getElementById("tablaListaCompras");
 const cuerpoTabla = tablaListaCompras.getElementsByTagName("tbody").item(0);
+const btnClear = document.getElementById("btnClear");
 
 let cont = 0;
 let totalEnProductos = 0;
@@ -27,7 +28,6 @@ function validarCantidad(cantidad) {
     return true;
 }//validarCantidad
 function getPrecio() {
-    ;
     return Math.round(Math.random() * 10000) / 100;
 }//getPrecio
 
@@ -121,3 +121,39 @@ window.addEventListener("load", function (event) {
     precioTotal.innerText = new Intl.NumberFormat("es-MX",
         { style: "currency", currency: "MXN" }).format(costoTotal);
 });;//window load
+
+function resetApp(){
+    txtName.value="";
+    txtNumber.value="";
+    txtName.style.border="";
+    txtNumber.style.border="";
+    txtName.focus();
+
+    alertValidacionesTexto.innerHTML="";
+    alertValidaciones.style.display="none";
+
+    cuerpoTabla.innerHTML="";
+
+    contadorProductos.innerText="0";
+    productosTotal.innerText="0";
+    precioTotal.innerText = new Intl.NumberFormat("es-MX",
+        { style: "currency", currency: "MXN" }).format(costoTotal);
+
+        cont = 0;
+        totalEnProductos=0;
+        costoTotal=0;
+        datos= new Array ();
+
+        localStorage.removeItem("datos");
+        localStorage.removeItem("resumen");
+
+        console.log("Aplicación reiniciada: Datos y variables restablecidos.");
+}
+if (btnClear){
+    btnClear.addEventListener("click",
+        function(event){
+            event.preventDefault();
+            resetApp();
+        }
+    )
+};
